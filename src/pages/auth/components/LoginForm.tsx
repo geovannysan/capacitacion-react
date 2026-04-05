@@ -1,112 +1,158 @@
+import { ArrowForward, Lock, Person, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   TextField,
   Button,
   Typography,
-  Link,
-  Checkbox,
-  FormControlLabel,
+  Avatar,
+  InputAdornment,
+  IconButton,
+  Paper,
 } from '@mui/material';
+import * as motion from 'motion/react-client';
+import { FieldErrors, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
 
-import { TextFieldStyle } from '../styles/auth-style';
+import { LoginFormValues } from '../hooks/useLogin';
 
-export const LoginForm = () => {
-  return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        bgcolor: '#1A1A2E',
-      }}
-    >
-      {/* Left Side - Decorative */}
+interface LoginFormProps {
+  register: UseFormRegister<LoginFormValues>;
+  handleSubmit: UseFormHandleSubmit<LoginFormValues>;
+  onSubmit: (values: LoginFormValues) => void;
+  errors: FieldErrors<LoginFormValues>;
+  vieW: boolean;
+  setView: () => void;
+}
 
-      {/* Right Side - Form */}
-      <Box
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          p: { xs: 3, sm: 6 },
-          bgcolor: '#16213E',
-        }}
+export const LoginForm = ({
+  register,
+  handleSubmit,
+  onSubmit,
+  errors,
+  vieW,
+  setView,
+}: LoginFormProps) => {
+  if (vieW)
+    return (
+      <motion.div
+        key="login"
+        initial={{ rotateY: -180, opacity: 0 }}
+        animate={{ rotateY: 0, opacity: 1 }}
+        exit={{ rotateY: 180, opacity: 0 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        style={{ backfaceVisibility: 'hidden', width: '100%' }}
       >
-        <Box sx={{ maxWidth: 400, width: '100%' }}>
-          {/* Logo */}
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" sx={{ color: '#fff', fontWeight: 600, mb: 1 }}>
-              Inicia Sesión
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)' }}>
-              Ingresa tus credenciales para continuar
-            </Typography>
-          </Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            padding: '10px',
+          }}
+        >
+          <Paper
+            elevation={0}
+            sx={{
+              maxWidth: 480,
+              width: '100%',
+              p: 5,
+              borderRadius: 3,
+              border: '1px solid #e0e0e0',
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Box>
+              <Box sx={{ textAlign: 'center', mb: 4 }}>
+                <Avatar
+                  sx={{
+                    width: 70,
+                    height: 70,
+                    bgcolor: 'primary.main',
+                    mx: 'auto',
+                    mb: 2,
+                  }}
+                >
+                  <Person sx={{ fontSize: 40 }} />
+                </Avatar>
+                <Typography variant="h4" fontWeight="bold" gutterBottom>
+                  Iniciar Sesión
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Ingresa tus credenciales de acceso
+                </Typography>
+              </Box>
 
-          <Box component="form">
-            <TextField fullWidth placeholder="Usuario o correo electrónico" sx={TextFieldStyle} />
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <TextField
+                  fullWidth
+                  label="email"
+                  {...register('email', { required: true })}
+                  margin="normal"
+                  error={!!errors.email}
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person color="primary" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  helperText="Prueba: admin"
+                />
 
-            <TextField fullWidth placeholder="Contraseña" sx={TextFieldStyle} />
+                <TextField
+                  fullWidth
+                  label="Contraseña"
+                  margin="normal"
+                  {...register('password', { required: true })}
+                  error={!!errors.password}
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Lock color="primary" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton edge="end">
+                          <VisibilityOff />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  helperText="Prueba: 123456"
+                />
 
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                mb: 4,
-              }}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    sx={{
-                      color: 'rgba(255,255,255,0.3)',
-                      '&.Mui-checked': { color: '#6690ea' },
-                    }}
-                  />
-                }
-                label={
-                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)' }}>
-                    Recordarme
-                  </Typography>
-                }
-              />
-              <Link
-                component="button"
-                type="button"
-                sx={{
-                  color: '#6690ea',
-                  textDecoration: 'none',
-                  fontSize: '0.875rem',
-                  '&:hover': { textDecoration: 'underline' },
-                }}
-              >
-                ¿Olvidaste tu contraseña?
-              </Link>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  endIcon={<ArrowForward />}
+                  sx={{ mt: 4, py: 1.5, borderRadius: 2, fontWeight: 'bold' }}
+                >
+                  Iniciar Sesión
+                </Button>
+
+                <Box sx={{ textAlign: 'center', mt: 3 }}>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    onClick={setView}
+                    sx={{ textTransform: 'none', fontWeight: 'medium' }}
+                  >
+                    ¿Olvidaste tu contraseña? Recupérala aquí
+                  </Button>
+                </Box>
+              </form>
             </Box>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                py: 1.75,
-                background: 'linear-gradient(135deg, #6690ea 0%, #4b78a2 100%)',
-                borderRadius: 2,
-                textTransform: 'none',
-                fontSize: '1rem',
-                fontWeight: 600,
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #5a85d6 0%, #4b78a2 100%)',
-                },
-              }}
-            >
-              Iniciar Sesión
-            </Button>
-          </Box>
+          </Paper>
         </Box>
-      </Box>
-    </Box>
-  );
+      </motion.div>
+    );
 };

@@ -8,27 +8,29 @@ import { ApiError } from '../../../core/api-error';
 import { TOKEN } from '../constants/auth-constants.constant';
 import { authService } from '../services/auth.service';
 
+export const loginSchema = z.object({
+  email: z.email({
+    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    message: 'el correo no es valido',
+  }),
+  password: z.string().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
+});
+export type LoginFormValues = z.infer<typeof loginSchema>;
+
 const useLogin = () => {
-  const initialValues = z.object({
-    email: z.email({
-      pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      message: 'el correo no es valido',
-    }),
-    password: z.string().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
-  });
-  type FormData = z.infer<typeof initialValues>;
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(initialValues),
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
   });
 
   const navigate = useNavigate();
   const [user, setUser] = useState<string>();
-  const formLogin = async (values: FormData) => {
+  const [view, setView] = useState<boolean>(true);
+  const formLogin = async (values: LoginFormValues) => {
     try {
       const loginActin = await authService.login(values);
       if (loginActin.status) {
@@ -44,7 +46,10 @@ const useLogin = () => {
       reset();
     }
   };
+  const haldelview = () => {
+    setView((view) => !view);
+  };
 
-  return { formLogin, register, handleSubmit, errors, user };
+  return { formLogin, register, handleSubmit, errors, user, setView: haldelview, view };
 };
 export default useLogin;

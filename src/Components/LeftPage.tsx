@@ -1,3 +1,4 @@
+import { LockReset } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 
 import {
@@ -5,7 +6,7 @@ import {
   CONTENEDOR_LEFT,
   DECORADOR_CIRCLES,
   POSITION_RELATIVE,
-} from '../../../styles/alert-retry';
+} from '../styles/alert-retry';
 export const LeftPage = () => {
   return (
     <Box sx={{ ...CONTENEDOR_LEFT, display: { xs: 'none', md: 'flex' } }}>
@@ -31,6 +32,7 @@ export const LeftPage = () => {
       />
 
       <Box sx={POSITION_RELATIVE}>
+        <LockReset sx={{ fontSize: 120, mb: 4, opacity: 0.9, color: '#fff' }} />
         <Typography
           variant="h2"
           sx={{

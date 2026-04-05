@@ -8,33 +8,36 @@ import {
   InputLabel,
   Typography,
 } from '@mui/material';
-import * as motion from 'motion/react-client';
+import { AnimatePresence } from 'motion/react';
 
 import { LoginForm } from './components/LoginForm';
+import RecoveryPassword from './components/RecoveryPassword';
 import useLogin from './hooks/useLogin';
-import { LeftPage } from '../character/components/LeftPage';
-const AuthPage = () => {
-  const { formLogin, handleSubmit, register, errors } = useLogin();
-  return (
-    <motion.div
-      initial={{
-        opacity: 0,
-        scale: 0,
-      }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0 }}
-      key="box"
-    >
-      <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          bgcolor: '#1A1A2E',
-        }}
-      >
-        <LeftPage />
+import { LeftPage } from '../../components/LeftPage';
 
-        <LoginForm />
+const AuthPage = () => {
+  const { formLogin, handleSubmit, register, errors, setView, view } = useLogin();
+  return (
+    <div>
+      <Box sx={{ minHeight: '100vh', display: 'flex' }}>
+        <LeftPage />
+        <Box sx={{ flex: 1, overflow: 'hidden' }}>
+          <AnimatePresence mode="wait">
+            {view ? (
+              <LoginForm
+                key="login"
+                register={register}
+                handleSubmit={handleSubmit}
+                vieW={view}
+                setView={setView}
+                onSubmit={formLogin}
+                errors={errors}
+              />
+            ) : (
+              <RecoveryPassword key="recovery" setView={setView} vieW={false} />
+            )}
+          </AnimatePresence>
+        </Box>
       </Box>
       <Container
         maxWidth="sm"
@@ -78,7 +81,7 @@ const AuthPage = () => {
           </form>
         </Grid>
       </Container>
-    </motion.div>
+    </div>
   );
 };
 
