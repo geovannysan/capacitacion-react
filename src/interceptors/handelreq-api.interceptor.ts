@@ -1,6 +1,6 @@
 import type { InternalAxiosRequestConfig } from 'axios';
 
-import { TOKEN } from '../pages/auth/constants/auth-constants.constant';
+import { TOKEN } from '../pages/Auth/constants/auth-constants.constant';
 
 export const handleRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
   const token = sessionStorage.getItem(TOKEN);

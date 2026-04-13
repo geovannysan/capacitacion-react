@@ -6,7 +6,7 @@ import { ErrorBoundary } from './components';
 import { FallbackError } from './components/FallbackError';
 import './styles/index.css';
 import { Toast } from './components/Toaster';
-import RouterApp from './pages/router/RouterApp';
+import RouterApp from './router/RouterApp';
 
 const queryClient = new QueryClient();
 function App() {

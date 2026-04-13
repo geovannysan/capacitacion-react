@@ -1,11 +1,12 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 
-import ProgressPage from '../../components/ProgressPage';
-import { ProtectedRoute } from '../../components/ProtectedRoute';
-import AuthPage from '../auth/auth-page';
+import ProgressPage from '../components/ProgressPage';
+import { ProtectedRoute } from '../components/ProtectedRoute';
+import TableBaseContainer from '../components/TableBaseContainer';
+import AuthPage from '../pages/Auth/auth-page';
 
-const CharacterListPage = lazy(() => import('../character/character-page'));
+const CharacterListPage = lazy(() => import('../pages/Character/character-page'));
 
 const RouterApp = () => {
   return (
@@ -21,6 +22,7 @@ const RouterApp = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/table" element={<TableBaseContainer />} />
         <Route
           path="home"
           element={

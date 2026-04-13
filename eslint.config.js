@@ -39,6 +39,7 @@ export default [
       '**/dist-ssr/**',
       '**/coverage/**',
       '**/build/**',
+      '**/*.{test,spec}.{ts,tsx}',
     ],
   },
   {
@@ -226,6 +227,16 @@ export default [
     },
     rules: {
       'local-filenames/constants-filename': 'error',
+    },
+  },
+  {
+    files: ['src/pages/**/*.{ts,tsx}'],
+    ignores: ['**/*.{test,spec}.{ts,tsx}'],
+    plugins: {
+      'local-filenames': localFilenamesPlugin,
+    },
+    rules: {
+      'local-filenames/pages-dir-pascal-case': 'error',
     },
   },
 ];

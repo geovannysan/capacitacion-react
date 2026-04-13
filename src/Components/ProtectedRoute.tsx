@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-import { TOKEN } from '../pages/auth/constants/auth-constants.constant';
+import { TOKEN } from '../pages/Auth/constants/auth-constants.constant';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
