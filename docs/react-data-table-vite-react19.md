@@ -14,8 +14,8 @@ Error: Element type is invalid: ... but got: undefined.
 
 ```json
 {
-  "main":    "dist/index.cjs.js",
-  "module":  "dist/index.es.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
   "browser": "dist/index.cjs.js"
 }
 ```
@@ -45,11 +45,11 @@ Un `React.memo()` tiene esta forma:
 React 19 es más estricto al validar el tipo en `createElement`. Dependiendo de cómo Vite
 resuelva el módulo en cada build/entorno, el resultado puede ser:
 
-| Escenario | Valor recibido | Error |
-|---|---|---|
-| Vite dev, interop A | `React.memo object` | `got: object` |
-| Vite dev, interop B | `undefined` | `got: undefined` |
-| Vite build prod | función directa | ✅ funciona |
+| Escenario           | Valor recibido      | Error            |
+| ------------------- | ------------------- | ---------------- |
+| Vite dev, interop A | `React.memo object` | `got: object`    |
+| Vite dev, interop B | `undefined`         | `got: undefined` |
+| Vite build prod     | función directa     | ✅ funciona      |
 
 ## La solución
 
@@ -70,9 +70,9 @@ const defaultExport = rdtAny['default'] as
 
 const DataTableComponent: AnyComponent =
   typeof defaultExport === 'function'
-    ? defaultExport                                                          // caso 1: función directa
-    : (defaultExport as React.MemoExoticComponent<AnyComponent>)?.type ??  // caso 2: React.memo → .type
-      (rdtAny as Record<string, AnyComponent>)['DataTable'];               // caso 3: named export fallback
+    ? defaultExport // caso 1: función directa
+    : ((defaultExport as React.MemoExoticComponent<AnyComponent>)?.type ?? // caso 2: React.memo → .type
+      (rdtAny as Record<string, AnyComponent>)['DataTable']); // caso 3: named export fallback
 ```
 
 Luego usar `React.createElement` en lugar de JSX para evitar la validación de tipo de React 19:

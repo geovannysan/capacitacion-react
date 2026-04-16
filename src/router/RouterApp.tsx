@@ -5,6 +5,7 @@ import ProgressPage from '../components/ProgressPage';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import TableBaseContainer from '../components/TableBaseContainer';
 import AuthPage from '../pages/Auth/auth-page';
+import Prueba from '../pages/Character/Prueba';
 
 const CharacterListPage = lazy(() => import('../pages/Character/character-page'));
 
@@ -12,6 +13,7 @@ const RouterApp = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/prueba" element={<Prueba />} />
         <Route
           path="/login"
           element={

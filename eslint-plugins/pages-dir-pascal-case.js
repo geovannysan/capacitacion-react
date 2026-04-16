@@ -14,8 +14,7 @@ const pagesDirPascalCaseRule = {
     },
     schema: [],
     messages: {
-      invalid:
-        'El directorio "{{dir}}" bajo pages/ debe ser PascalCase (ej: "{{expected}}").',
+      invalid: 'El directorio "{{dir}}" bajo pages/ debe ser PascalCase (ej: "{{expected}}").',
     },
   },
   create(context) {
